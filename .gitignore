@@ -34,3 +34,6 @@ pnpm-debug.log*
 *.sw?
 .DS_Store
 Thumbs.db
+
+# GitHub Workflows (ignored when OAuth token lacks workflow scope)
+.github/
