@@ -1,0 +1,24 @@
+services:
+  smart-lms-backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: smart-lms-backend
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  smart-lms-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-lms-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - smart-lms-backend
+    environment:
+      - NODE_ENV=production
