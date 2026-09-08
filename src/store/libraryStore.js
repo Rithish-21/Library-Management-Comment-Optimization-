@@ -95,7 +95,7 @@ export const useLibraryStore = create((set, get) => {
                     // ignore
                 }
             }
-            get().addToast('info', 'Signed Out', 'You have been signed out. Welcome back to Smart LMS.');
+            get().addToast('info', 'Signed Out', 'You have been signed out. Welcome back to Library Management Comment Optimization.');
         },
         switchRole: (role) => {
             const targetUser = get().members.find((m) => m.role === role) || {

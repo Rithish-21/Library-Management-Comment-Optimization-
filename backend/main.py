@@ -24,8 +24,8 @@ from .services.recommendation_service import get_most_popular, get_category_reco
 from .services.backup_service import create_snapshot, restore_snapshot
 
 app = FastAPI(
-    title="Smart LMS Python API",
-    description="Intelligent Library Management System backend powered by Python, FastAPI, and Pydantic.",
+    title="Library Management Comment Optimization API",
+    description="Intelligent Library Management Comment Optimization backend powered by Python, FastAPI, and Pydantic.",
     version="1.0.0"
 )
 
@@ -41,7 +41,7 @@ app.add_middleware(
 @app.get("/")
 def root():
     return {
-        "system": "Smart Library Management System (Python Backend)",
+        "system": "Library Management Comment Optimization (Python Backend)",
         "status": "online",
         "docs": "/docs",
         "algorithms": [

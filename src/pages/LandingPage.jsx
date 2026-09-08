@@ -52,7 +52,7 @@ export const LandingPage = () => {
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-300 text-xs font-bold tracking-wide shadow-glow">
                 <Sparkles className="w-4 h-4 text-amber-400 animate-pulse"/>
-                <span>SMART LMS v1.0 • NEXT-GEN 3D LIBRARY OPERATING SYSTEM</span>
+                <span>LIBRARY MANAGEMENT COMMENT OPTIMIZATION • 3D OPERATING SYSTEM</span>
               </div>
 
               {/* Background Animation Variations Pill Switcher */}
@@ -72,8 +72,8 @@ export const LandingPage = () => {
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.08]">
-              Next-Gen <br />
-              <span className="text-gradient">Library OS.</span>
+              Library Management <br />
+              <span className="text-gradient">Comment Optimization.</span>
             </h1>
 
             <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">

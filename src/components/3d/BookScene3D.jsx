@@ -152,7 +152,7 @@ export const BookScene3D = ({ className = '' }) => {
                 // Footer
                 ctx.fillStyle = '#cbd5e1';
                 ctx.font = '16px monospace';
-                ctx.fillText('SMART LIBRARY OS // PRD SPEC', 256, 680);
+                ctx.fillText('LIBRARY MANAGEMENT COMMENT OPTIMIZATION', 256, 680);
             }
             return new THREE.CanvasTexture(canvas);
         };

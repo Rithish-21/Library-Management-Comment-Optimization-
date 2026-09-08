@@ -76,8 +76,8 @@ export const LoginPage = () => {
             <Sparkles className="w-3.5 h-3.5 text-amber-400"/>
             <span>Screen 1: Role-Based Access Control</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Sign In to Smart LMS
+          <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            Sign In to Library Management Comment Optimization
           </h2>
           <p className="text-slate-400 text-xs sm:text-sm mt-1.5 max-w-md mx-auto">
             Select an access tier below to preview role-specific permissions and dashboards

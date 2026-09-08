@@ -77,11 +77,11 @@ export const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
-            <span>Smart LMS Core Online • In-Memory Reactive Store Active</span>
+            <span>Library Management Comment Optimization • In-Memory Reactive Store Active</span>
           </div>
 
           <p className="text-center sm:text-right">
-            Smart Library Management System • Compliant with PRD, TRD & DevOps Specification
+            Library Management Comment Optimization • Compliant with PRD, TRD & DevOps Specification
           </p>
         </div>
       </footer>

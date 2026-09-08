@@ -5,7 +5,7 @@ import { issueFromInventory, returnToInventory, addBookIfNotDuplicate, updateBoo
 import { createReservation, cancelReservation } from '../reservationService';
 import { mostPopular, getPopularityLeaderboard } from '../recommendationService';
 import { createStateSnapshot } from '../backupService';
-describe('Smart LMS - Core Algorithms & Business Logic', () => {
+describe('Library Management Comment Optimization - Core Algorithms & Business Logic', () => {
     const sampleBooks = [
         { id: 1, title: 'Database', author: 'Author A', category: 'Systems', shelf: 'B2', status: 'Available' },
         { id: 2, title: 'Java', author: 'Author B', category: 'Programming', shelf: 'A2', status: 'Issued' },
