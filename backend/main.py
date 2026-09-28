@@ -13,7 +13,8 @@ from .models import (
     AddBookRequest,
     SearchBenchmarkResult,
     FineCalculationResult,
-    BackupSnapshot
+    BackupSnapshot,
+    UpdateBookRequest,
 )
 from .data import db
 from .services.search_service import benchmark_search
@@ -26,7 +27,7 @@ from .services.backup_service import create_snapshot, restore_snapshot
 app = FastAPI(
     title="Library Management Comment Optimization API",
     description="Intelligent Library Management Comment Optimization backend powered by Python, FastAPI, and Pydantic.",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # Enable CORS for Vite frontend
@@ -114,9 +115,10 @@ def return_book(req: ReturnRequest):
 
     return_date = req.returnDate or time.strftime("%Y-%m-%d")
     fine_res = calculate_fine(record.dueDate, return_date)
+    fine_amount = req.allocatedFine if req.allocatedFine is not None else fine_res.fineAmount
 
     record.returnDate = return_date
-    record.fineAmount = fine_res.fineAmount
+    record.fineAmount = fine_amount
     record.status = "returned"
 
     # Replenish stock
@@ -128,6 +130,8 @@ def return_book(req: ReturnRequest):
     return {
         "message": f"'{record.bookTitle}' returned successfully",
         "fine": fine_res,
+        "allocatedFine": fine_amount,
+        "paymentMethod": req.paymentMethod or "Campus Card",
         "record": record,
         "fulfilledReservation": fulfilled_reservation
     }
@@ -177,6 +181,57 @@ def add_book(req: AddBookRequest):
     db.borrow_counts[new_book.title] = 0
 
     return new_book
+
+# 8b. Update Book Details ("About Books" & Metadata)
+@app.put("/api/books/{book_id}", response_model=Book)
+def update_book(book_id: str, req: UpdateBookRequest):
+    book = next((b for b in db.books if b.id == book_id), None)
+    if not book:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    old_title = book.title
+    if req.title is not None and req.title.strip():
+        new_title = req.title.strip()
+        if new_title.lower() != old_title.lower():
+            dup_error = check_duplicate_book([b for b in db.books if b.id != book_id], new_title, req.isbn or book.isbn)
+            if dup_error:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=dup_error)
+            if old_title in db.inventory:
+                db.inventory[new_title] = db.inventory.pop(old_title)
+            if old_title in db.borrow_counts:
+                db.borrow_counts[new_title] = db.borrow_counts.pop(old_title)
+        book.title = new_title
+
+    if req.author is not None:
+        book.author = req.author.strip()
+    if req.shelf is not None:
+        book.shelf = req.shelf.strip()
+    if req.category is not None:
+        book.category = req.category.strip()
+    if req.isbn is not None:
+        book.isbn = req.isbn.strip()
+    if req.description is not None:
+        book.description = req.description.strip()
+    if req.status is not None:
+        book.status = req.status
+
+    return book
+
+# 8c. Delete Book & Stock
+@app.delete("/api/books/{book_id}")
+def delete_book(book_id: str):
+    book = next((b for b in db.books if b.id == book_id), None)
+    if not book:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+    db.books = [b for b in db.books if b.id != book_id]
+    if book.title in db.inventory:
+        del db.inventory[book.title]
+    if book.title in db.borrow_counts:
+        del db.borrow_counts[book.title]
+
+    return {"message": f"Book '{book.title}' and stock deleted successfully", "id": book_id}
+
 
 # 9. In-Memory Snapshots & Recovery (Feature 15)
 @app.get("/api/backup/snapshot", response_model=BackupSnapshot)

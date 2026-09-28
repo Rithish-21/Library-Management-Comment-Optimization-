@@ -3,13 +3,17 @@ import { useLibraryStore } from '../store/libraryStore';
 import { Badge } from '../components/ui/Badge';
 import { Modal } from '../components/ui/Modal';
 import { getRelatedBooks } from '../services/recommendationService';
-import { BookOpen, Filter, Search, MapPin, Sparkles, BookmarkPlus, BookDown, ArrowUpRight, } from 'lucide-react';
+import { BookOpen, Filter, Search, MapPin, Sparkles, BookmarkPlus, BookDown, ArrowUpRight, Edit3, Save, Lock, } from 'lucide-react';
 export const CatalogPage = () => {
-    const { books, inventory, recommendations, currentUser, issueBook, reserveBook, } = useLibraryStore();
+    const { books, inventory, recommendations, currentUser, currentRole, issueBook, reserveBook, updateBook, } = useLibraryStore();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [selectedBook, setSelectedBook] = useState(null);
+    const [isEditingAbout, setIsEditingAbout] = useState(false);
+    const [aboutDescription, setAboutDescription] = useState('');
+    const [aboutShelf, setAboutShelf] = useState('');
+    const [aboutAuthor, setAboutAuthor] = useState('');
     // Extract unique categories
     const categories = useMemo(() => {
         const set = new Set(books.map((b) => b.category));
@@ -162,12 +166,66 @@ export const CatalogPage = () => {
             </div>
 
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-                Overview & Description
-              </h4>
-              <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-slate-800">
+              <div className="flex items-center justify-between mb-1.5">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  About the Book / Overview & Description
+                </h4>
+                {currentRole === 'librarian' ? (<button type="button" onClick={() => {
+                if (!isEditingAbout) {
+                    setAboutDescription(selectedBook.description || '');
+                    setAboutShelf(selectedBook.shelf || '');
+                    setAboutAuthor(selectedBook.author || '');
+                }
+                setIsEditingAbout(!isEditingAbout);
+            }} className="text-[11px] font-bold text-brand-300 hover:text-brand-200 inline-flex items-center gap-1">
+                    <Edit3 className="w-3 h-3"/>
+                    <span>{isEditingAbout ? 'Cancel Edit' : 'Edit About Book'}</span>
+                  </button>) : (<span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 font-mono inline-flex items-center gap-1">
+                    <Lock className="w-2.5 h-2.5"/>
+                    <span>Librarian Edit Access</span>
+                  </span>)}
+              </div>
+
+              {isEditingAbout ? (<div className="space-y-3 p-3.5 rounded-xl bg-slate-900 border border-brand-500/40 animate-fade-in">
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Author</label>
+                      <input type="text" value={aboutAuthor} onChange={(e) => setAboutAuthor(e.target.value)} className="w-full glass-input rounded-lg px-2.5 py-1 text-xs text-white"/>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Shelf Location</label>
+                      <input type="text" value={aboutShelf} onChange={(e) => setAboutShelf(e.target.value)} className="w-full glass-input rounded-lg px-2.5 py-1 text-xs text-white"/>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1">Description / Overview</label>
+                    <textarea rows={3} value={aboutDescription} onChange={(e) => setAboutDescription(e.target.value)} className="w-full glass-input rounded-lg px-2.5 py-1.5 text-xs text-white resize-none"/>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <button type="button" onClick={() => setIsEditingAbout(false)} className="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs">
+                      Cancel
+                    </button>
+                    <button type="button" onClick={() => {
+                updateBook(selectedBook.id, {
+                    author: aboutAuthor.trim(),
+                    shelf: aboutShelf.trim(),
+                    description: aboutDescription.trim(),
+                });
+                setSelectedBook({
+                    ...selectedBook,
+                    author: aboutAuthor.trim(),
+                    shelf: aboutShelf.trim(),
+                    description: aboutDescription.trim(),
+                });
+                setIsEditingAbout(false);
+            }} className="px-3 py-1 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-md flex items-center gap-1">
+                      <Save className="w-3 h-3"/>
+                      <span>Save Changes</span>
+                    </button>
+                  </div>
+                </div>) : (<p className="text-xs text-slate-300 leading-relaxed bg-slate-950/40 p-3 rounded-xl border border-slate-800">
                 {selectedBook.description || 'No description available.'}
-              </p>
+              </p>)}
             </div>
 
             {/* Direct Recommendations (Feature 8) */}

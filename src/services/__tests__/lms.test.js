@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { binarySearch, getSortedCatalog, linearSearchWithSteps } from '../searchService';
 import { calculateFine, isReminderDue, getFineBreakdown } from '../fineService';
-import { issueFromInventory, returnToInventory, addBookIfNotDuplicate, updateBookStatus } from '../inventoryService';
+import { issueFromInventory, returnToInventory, addBookIfNotDuplicate, updateBookStatus, deleteBookFromCatalog, deleteStockFromInventory, updateBookDetails } from '../inventoryService';
 import { createReservation, cancelReservation } from '../reservationService';
 import { mostPopular, getPopularityLeaderboard } from '../recommendationService';
 import { createStateSnapshot } from '../backupService';
@@ -108,6 +108,27 @@ describe('Library Management Comment Optimization - Core Algorithms & Business L
         it('should update book status', () => {
             const updated = updateBookStatus(sampleBooks, 1, 'Lost');
             expect(updated.find((b) => b.id === 1)?.status).toBe('Lost');
+        });
+        it('should delete book from catalog by ID (Librarian Action)', () => {
+            const remaining = deleteBookFromCatalog(sampleBooks, 2);
+            expect(remaining.length).toBe(3);
+            expect(remaining.find((b) => b.id === 2)).toBeUndefined();
+        });
+        it('should delete stock entry from inventory (Librarian Action)', () => {
+            const inv = { 'Python': 5, 'Java': 3 };
+            const updatedInv = deleteStockFromInventory(inv, 'Java');
+            expect(updatedInv['Java']).toBeUndefined();
+            expect(updatedInv['Python']).toBe(5);
+        });
+        it('should update book metadata and about details (Librarian Action)', () => {
+            const updated = updateBookDetails(sampleBooks, 3, {
+                description: 'Updated Python masterclass overview',
+                shelf: 'A9',
+            });
+            const pyBook = updated.find((b) => b.id === 3);
+            expect(pyBook?.description).toBe('Updated Python masterclass overview');
+            expect(pyBook?.shelf).toBe('A9');
+            expect(pyBook?.title).toBe('Python');
         });
     });
     // 4. Reservation Queue Tests (TRD & PRD)

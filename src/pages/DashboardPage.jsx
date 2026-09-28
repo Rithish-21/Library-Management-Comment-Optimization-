@@ -42,7 +42,7 @@ export const DashboardPage = () => {
       {/* Key Metric Cards (derived from mock store) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard title="Total Catalog Titles" value={books.length} subtitle={`${totalStock + issuedCount} total physical copies`} icon={<BookOpen className="w-5 h-5 text-indigo-400"/>} colorScheme="indigo" onClick={() => setActiveTab('catalog')}/>
-        <MetricCard title="Active Issued Books" value={issuedCount} subtitle={`${borrowRecords.filter(r => r.status === 'overdue').length} currently overdue`} icon={<BookDown className="w-5 h-5 text-amber-400"/>} colorScheme="amber" onClick={() => setActiveTab('return')}/>
+        <MetricCard title="Active Issued Books" value={issuedCount} subtitle={`${borrowRecords.filter(r => r.status === 'overdue').length} currently overdue`} icon={<BookDown className="w-5 h-5 text-amber-400"/>} colorScheme="amber" onClick={() => setActiveTab(currentRole === 'librarian' ? 'return' : 'catalog')}/>
         <MetricCard title="Available in Stock" value={availableCount} subtitle="Ready for immediate checkout" icon={<Boxes className="w-5 h-5 text-emerald-400"/>} colorScheme="emerald" onClick={() => setActiveTab('catalog')}/>
         <MetricCard title="Registered Members" value={membersCount} subtitle={`${reservations.filter(r => r.status === 'waiting').length} active reservations`} icon={<Users className="w-5 h-5 text-purple-400"/>} colorScheme="purple" onClick={() => setActiveTab('analytics')}/>
       </div>
@@ -54,7 +54,7 @@ export const DashboardPage = () => {
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
               {currentRole === 'librarian' ? (<>
                   <ShieldCheck className="w-4 h-4 text-purple-400"/>
-                  <span>Librarian Quick Actions</span>
+                  <span>Librarian Quick Actions (v2.0)</span>
                 </>) : (<>
                   <Sparkles className="w-4 h-4 text-indigo-400"/>
                   <span>Student Quick Actions</span>
@@ -85,10 +85,10 @@ export const DashboardPage = () => {
                   <BookUp className="w-5 h-5"/>
                 </div>
                 <h4 className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">
-                  Return & Auto-Fine (Screen 6)
+                  Return & Fine Collection (Screen 6)
                 </h4>
                 <p className="text-xs text-slate-400 mt-1">
-                  Process returns and compute $5/day fines instantly
+                  Librarian-only returns, penalty allocation & fee collection
                 </p>
               </button>
 
@@ -97,10 +97,10 @@ export const DashboardPage = () => {
                   <Boxes className="w-5 h-5"/>
                 </div>
                 <h4 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">
-                  Inventory & Backups (Screen 8)
+                  Stocks & Inventory (Screen 8)
                 </h4>
                 <p className="text-xs text-slate-400 mt-1">
-                  Duplicate detector & one-click memory snapshots
+                  Add/delete stocks, edit about books & snapshot recovery
                 </p>
               </button>
 

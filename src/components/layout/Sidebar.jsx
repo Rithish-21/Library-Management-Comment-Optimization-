@@ -48,12 +48,12 @@ export const Sidebar = () => {
         },
         {
             id: 'return',
-            label: 'Return Book & Fines',
+            label: 'Return & Fine Collection',
             screenNum: '6',
             icon: <BookUp className="w-4 h-4"/>,
-            roleReq: 'all',
-            badge: activeBorrowsCount > 0 ? activeBorrowsCount.toString() : undefined,
-            badgeColor: 'amber',
+            roleReq: 'librarian',
+            badge: currentRole === 'librarian' ? (activeBorrowsCount > 0 ? activeBorrowsCount.toString() : 'Librarian') : 'Librarian Only',
+            badgeColor: currentRole === 'librarian' ? 'amber' : 'purple',
         },
         {
             id: 'reservation',
@@ -65,11 +65,11 @@ export const Sidebar = () => {
         },
         {
             id: 'inventory',
-            label: 'Inventory & Backups',
+            label: 'Stocks & Inventory',
             screenNum: '8',
             icon: <Boxes className="w-4 h-4"/>,
             roleReq: 'librarian',
-            badge: 'Admin Only',
+            badge: currentRole === 'librarian' ? 'Admin' : 'Librarian Only',
             badgeColor: 'purple',
         },
         {

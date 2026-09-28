@@ -21,6 +21,9 @@ export const Navbar = () => {
               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30">
                 Comment Optimization
               </span>
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                v2.0
+              </span>
             </div>
             <p className="text-[11px] text-slate-400 hidden sm:block">Library Management Comment Optimization</p>
           </div>

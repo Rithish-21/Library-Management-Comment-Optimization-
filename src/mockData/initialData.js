@@ -317,3 +317,23 @@ export const initialMembers = [
         department: "Library & Archives"
     }
 ];
+
+export const initialFineCollections = [
+    {
+        id: "fc-1001",
+        recordId: "rec-203",
+        student: "Sneha Patel",
+        studentId: "103",
+        book: "Database",
+        allocatedAmount: 25,
+        collectedAmount: 25,
+        ratePerDay: 5,
+        overdueDays: 5,
+        collectedBy: "Dr. Sarah Jenkins",
+        collectionDate: "2026-02-20",
+        paymentMethod: "Campus Card",
+        status: "Collected",
+        receiptNo: "REC-FINE-2026-001",
+    }
+];
+

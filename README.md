@@ -1,23 +1,42 @@
-# Library Management Comment Optimization
+# Library Management Comment Optimization (Version 2.0)
+
+[![Release](https://img.shields.io/badge/Release-v2.0-purple.svg)](https://github.com/Rithish-21/Library-Management-Comment-Optimization-)
+[![Tests](https://img.shields.io/badge/Tests-55%20Passed-emerald.svg)](https://github.com/Rithish-21/Library-Management-Comment-Optimization-)
+[![RBAC](https://img.shields.io/badge/RBAC-Librarian%20Protected-indigo.svg)](https://github.com/Rithish-21/Library-Management-Comment-Optimization-)
 
 A state-of-the-art intelligent **Library Management Comment Optimization** system built with **React 18**, **JavaScript (ES Modules)**, **Tailwind CSS**, **Zustand**, and a high-performance **Python FastAPI** backend with **Pydantic** models.
 
-Designed and delivered in strict adherence to the **Product Requirements Document (PRD)**, **Technical Requirements Document (TRD)**, and **DevOps Implementation Plan**.
+---
+
+## 🔒 Version 2.0 RBAC Permission Matrix
+
+| Capability / Module | Student Role | Librarian Role | Enforcement Layer |
+|---|---|---|---|
+| **Add Stock & Books** | 🚫 Restricted | ✅ Authorized | Store guardrail + UI Ingestion Terminal |
+| **Delete Stock & Books** | 🚫 Restricted | ✅ Authorized | Store guardrail + Inventory Delete Action |
+| **Edit "About Books" / Metadata** | 👁️ View-only | ✅ Edit & Save | Catalog & Inventory Modal Guards |
+| **Return Book Processing** | 🚫 Restricted | ✅ Authorized | Screen 6 Guard + Store validation |
+| **Fine Allocation & Waivers** | 🚫 Restricted | ✅ Authorized | Custom penalty rates & waiver reasons |
+| **Fine Collection & Receipts** | 🚫 Restricted | ✅ Authorized | Audit receipts & Collection Ledger |
+| **Book Catalog & O(log n) Search** | ✅ Full Access | ✅ Full Access | Public reader access |
+| **FIFO Reservation Queue** | ✅ Full Access | ✅ Full Access | Priority queue booking |
+| **Smart Recommendations & Trends** | ✅ Full Access | ✅ Full Access | Affinity & popularity leaderboards |
 
 ---
 
 ## 🚀 Key Features & 10 Functional Screens
 
 1. **Authentication & RBAC (`/login`)** — Role switcher supporting **Student** (`student@lib.com`) and **Librarian** (`librarian@lib.com`) credentials with demo password `demo123` and quick-fill chips.
-2. **Operations Dashboard (`/dashboard`)** — Real-time KPI summary widgets, dynamic **"Due Soon" Alert Banner** (Feature 6), role-specific CTAs, and recent activity ledger.
-3. **Book Catalog (`/catalog`)** — Full catalog browser with category pills, physical shelf locations (`A1`, `B2`...), status badges (*Available*, *Issued*, *Lost*), and recommendation popups.
+2. **Operations Dashboard (`/dashboard`)** — Real-time KPI summary widgets, dynamic **"Due Soon" Alert Banner** (Feature 6), role-tailored CTAs, and recent activity ledger.
+3. **Book Catalog (`/catalog`)** — Full catalog browser with category pills, physical shelf locations (`A1`, `B2`...), status badges, and Librarian-only **"Edit About Book"** controls.
 4. **Fast Search & Benchmark (`/search`)** — Demonstrates **O(log n) Binary Search** on pre-sorted array vs. **O(n) Linear Scan** with side-by-side timing in milliseconds, step counter, and interactive execution trace visualizer (Feature 1).
 5. **Issue Book (`/issue`)** — Digital checkout with real-time stock verification guardrail (blocks issue if stock = 0), member selection, and automatic inventory decrement (Features 2 & 4).
-6. **Return Book & Fine Calculator (`/return`)** — Automated late penalty calculation ($5/day formula) with interactive date pickers and instant physical stock replenishment (Feature 3).
+6. **Return Book & Fine Allocation / Collection (`/return`)** — **Librarian-exclusive** screen with automated formula assessment, custom penalty rate allocation, manual waiver options, settlement methods, and permanent collection audit receipts (Feature 3).
 7. **Reservation Priority Queue (`/reservation`)** — FIFO waitlist queue allocation for checked-out / out-of-stock titles with live queue position indicator (`#1`, `#2`...) and rebalancing (Features 5 & 14).
-8. **Inventory & Backup Center (`/inventory`)** — Admin control center with **Deduplication Check** on ingestion (Feature 7), status toggles, stock adjustments, and one-click in-memory **Backup Snapshots** and JSON export/restore (Feature 15).
+8. **Stocks & Inventory Center (`/inventory`)** — **Librarian-exclusive** control center for **Add & Delete Stocks**, book deduplication, status toggles, editing "About Books" details, and memory snapshot backups (Features 7, 12, 15).
 9. **Smart Recommendations (`/recommendations`)** — Category affinity suggestions (Feature 8) and **Borrow Popularity Leaderboard** with the `#1 Trending` badge computed via `max()` (Feature 11).
 10. **Executive Analytics & Members (`/analytics`)** — KPIs, categorical stock distribution progress bars, operational health monitors, and member directory lookup with borrow history (Features 9 & 13).
+
 
 ---
 

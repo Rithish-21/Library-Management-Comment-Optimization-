@@ -55,6 +55,19 @@ class IssueRequest(BaseModel):
 class ReturnRequest(BaseModel):
     recordId: str
     returnDate: Optional[str] = None
+    allocatedFine: Optional[float] = None
+    paymentMethod: Optional[str] = None
+    allocationReason: Optional[str] = None
+
+class UpdateBookRequest(BaseModel):
+    title: Optional[str] = None
+    author: Optional[str] = None
+    isbn: Optional[str] = None
+    shelf: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    status: Optional[BookStatus] = None
+
 
 class ReservationRequest(BaseModel):
     studentName: str

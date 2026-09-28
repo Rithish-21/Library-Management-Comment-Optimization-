@@ -57,3 +57,39 @@ export function addBookIfNotDuplicate(books, newBook) {
 export function updateBookStatus(books, bookId, status) {
     return books.map((b) => (b.id === bookId ? { ...b, status } : b));
 }
+
+/**
+ * Delete a book from the catalog by ID.
+ * Restricted to Librarian administrators.
+ */
+export function deleteBookFromCatalog(books, bookId) {
+    return books.filter((b) => b.id !== bookId);
+}
+
+/**
+ * Delete / remove a title's stock entry from inventory.
+ * Restricted to Librarian administrators.
+ */
+export function deleteStockFromInventory(inventory, bookTitle) {
+    const updated = { ...inventory };
+    delete updated[bookTitle];
+    return updated;
+}
+
+/**
+ * Update book metadata ("About Book" description, author, shelf, category, ISBN).
+ * Restricted to Librarian administrators.
+ */
+export function updateBookDetails(books, bookId, updatedFields) {
+    return books.map((b) => {
+        if (b.id === bookId) {
+            return {
+                ...b,
+                ...updatedFields,
+                id: b.id, // Preserve immutable ID
+            };
+        }
+        return b;
+    });
+}
+

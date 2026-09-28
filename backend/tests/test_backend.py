@@ -180,3 +180,65 @@ def test_api_backup_snapshot_and_restore():
     # Restore
     restore_resp = client.post("/api/backup/restore", json=snapshot)
     assert restore_resp.status_code == 200
+
+def test_api_update_book_about_details():
+    resp = client.put("/api/books/1", json={
+        "description": "Comprehensive native Android guide updated for v2.0",
+        "shelf": "C9"
+    })
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["shelf"] == "C9"
+    assert "updated for v2.0" in data["description"]
+
+def test_api_delete_book_and_stock():
+    # First add a test book
+    add_resp = client.post("/api/books", json={
+        "title": "Temporary Book For Deletion",
+        "author": "Temp Author",
+        "isbn": "978-9999999999",
+        "shelf": "Z9",
+        "category": "Systems",
+        "initialCopies": 3,
+        "description": "To be deleted"
+    })
+    assert add_resp.status_code == 200
+    book_id = add_resp.json()["id"]
+
+    # Delete book and its stock
+    del_resp = client.delete(f"/api/books/{book_id}")
+    assert del_resp.status_code == 200
+
+    # Verify not in books
+    books_resp = client.get("/api/books")
+    titles = [b["title"] for b in books_resp.json()]
+    assert "Temporary Book For Deletion" not in titles
+
+    # Verify not in inventory
+    inv_resp = client.get("/api/inventory")
+    assert "Temporary Book For Deletion" not in inv_resp.json()
+
+def test_api_return_with_allocated_fine():
+    # Issue a book
+    issue_resp = client.post("/api/issue", json={
+        "studentId": "101",
+        "studentName": "Rahul",
+        "bookTitle": "Java",
+        "dueDate": "2026-03-01"
+    })
+    rec_id = issue_resp.json()["id"]
+
+    # Return with custom allocated fine (e.g., waived to 0 or customized)
+    return_resp = client.post("/api/return", json={
+        "recordId": rec_id,
+        "returnDate": "2026-03-06",
+        "allocatedFine": 12.0,
+        "paymentMethod": "Campus Card",
+        "allocationReason": "Librarian courtesy waiver reduction"
+    })
+    assert return_resp.status_code == 200
+    ret_data = return_resp.json()
+    assert ret_data["allocatedFine"] == 12.0
+    assert ret_data["record"]["fineAmount"] == 12.0
+    assert ret_data["paymentMethod"] == "Campus Card"
+
